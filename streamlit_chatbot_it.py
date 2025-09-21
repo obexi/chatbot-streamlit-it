@@ -1,15 +1,9 @@
 import streamlit as st
-#import google.generativeai as genai
 import sqlite3
 import os
-#from dotenv import load_dotenv
 from google import genai
 
-# --- Langkah 1: Persiapan Lingkungan & Konfigurasi API ---
-# Konfigurasi model Gemini
-if "genai_client" not in st.session_state:
-    genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-    model = genai.GenerativeModel('gemini-1.5-pro')
+# --- Langkah 1: Title ---
 
 st.title("👨‍💻 IT Support Chatbot")
 st.caption("Silahkan pilih pertanyaan dari sidebar")
@@ -107,6 +101,7 @@ if prompt := st.chat_input("Tanyakan sesuatu tentang IT Support..."):
                 st.markdown(response)
             else:
                 # Jika tidak ada di database, gunakan Gemini AI
+                model = genai.GenerativeModel('gemini-2.5-flash')
                 response_gemini = model.generate_content(f"Kamu adalah chatbot IT Support. Jawab pertanyaan berikut dengan singkat dan jelas: {prompt}")
                 response = response_gemini.text
                 st.markdown(response)
